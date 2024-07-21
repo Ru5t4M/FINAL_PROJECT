@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Products</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/baskets">Baskets</a></li>
+            <li><a href="/favorites">Favorites</a></li>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Products</h1>
+        <div class="product-form">
+            <h2>Add New Product</h2>
+            <form id="productForm">
+                <input type="text" name="name" placeholder="Product Name" required>
+                <input type="text" name="description" placeholder="Description" required>
+                <input type="number" name="stock" placeholder="Stock" required>
+                <input type="text" name="category" placeholder="Category" required>
+                <input type="number" name="price" placeholder="Price" required>
+                <input type="text" name="image_url" placeholder="Image URL" required>
+                <button class="add-button" type="submit">Add Product</button>
+            </form>
+        </div>
+        <div class="product-list">
+            <% products.forEach(product => { %>
+                <div class="card">
+                    <h3><%= product.name %></h3>
+                    <p>Description: <%= product.description %></p>
+                    <p>Stock: <%= product.stock %></p>
+                    <p>Category: <%= product.category %></p>
+                    <p>Price: <%= product.price %></p>
+                    <img src="<%= product.image_url %>" alt="<%= product.name %> Image">
+                    <button class="edit-button"><a href="/products/edit/<%= product.id %>" class="no-underline">Edit</a></button>
+                    <button class="delete-button" onclick="deleteProduct('<%= product.id %>')">Delete</button>
+                    <form>
+                    <button style="margin-top: 10px; background-color: blue;" class="delete-button" onclick="addToFavorite('<%= product.id %>')">Add to favorite</button>
+                    </form>
+                    <form action="/baskets/<%= product.id %>" method="POST">
+                    <button class="addbasket-button" onclick="addBasket('<%= product.id %>')">Add Basket</button>
+                    </form>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <script>
+        const productForm = document.querySelector("#productForm");
+
+        productForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const newProduct = {
+                name: formData.get("name"),
+                description: formData.get("description"),
+                stock: formData.get("stock"),
+                category: formData.get("category"),
+                price: formData.get("price"),
+                image_url: formData.get("image_url")
+            };
+
+            fetch("/products", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newProduct)
+            })
+            .then(res => res.json())
+            .then(product => {
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+        });
+
+        const deleteProduct = (id) => {
+            fetch(`/products/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => res.json())
+            .then(product => {
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+        };
+
+        const addToFavorite = (id) => {
+            fetch(`/favorites/${id}`, {
+                method: "POST"
+            })
+            .then(res => {
+                if (res.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Failed to add to favorites');
+                }
+            })
+            .catch(err => console.error(err));
+        };
+
+        const addBasket = (id) => {
+            fetch(`/products/${id}`)
+            .then(res => res.json())
+            .then(product => {
+                fetch("/baskets", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(product)
+                })
+                .then(res => res.json())
+                .then(result => {
+                    console.log(result.message);
+                })
+                .catch(err => console.error(err));
+            })
+            .catch(err => console.error(err));
+        };
+    </script>
+</body>
+</html>

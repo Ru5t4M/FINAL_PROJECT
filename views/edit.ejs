@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Edit Product</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/baskets">Baskets</a></li>
+            <li><a href="/favorites">Favorites</a></li>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Edit Product</h1>
+        <div class="product-form">
+            <form id="editProductForm">
+                <input type="text" name="name" value="<%= product.name %>" placeholder="Product Name" required>
+                <input type="text" name="description" value="<%= product.description %>" placeholder="Description" required>
+                <input type="number" name="stock" value="<%= product.stock %>" placeholder="Stock" required>
+                <input type="text" name="category" value="<%= product.category %>" placeholder="Category" required>
+                <input type="number" name="price" value="<%= product.price %>" placeholder="Price" required>
+                <input type="text" name="image_url" value="<%= product.image_url %>" placeholder="Image URL" required>
+                <button class="update-button" type="submit">Update Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const editProductForm = document.querySelector("#editProductForm");
+
+        editProductForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const updatedProduct = {
+                name: formData.get("name"),
+                description: formData.get("description"),
+                stock: formData.get("stock"),
+                category: formData.get("category"),
+                price: formData.get("price"),
+                image_url: formData.get("image_url")
+            };
+
+            fetch("/products/<%= product.id %>", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedProduct)
+            })
+            .then(res => res.json())
+            .then(product => {
+                window.location.href = '/products';
+            })
+            .catch(err => console.error(err));
+        });
+    </script>
+</body>
+</html>

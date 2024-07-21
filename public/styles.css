@@ -1,0 +1,251 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+nav {
+    width: 250px;
+    background-color: #2c3e50;
+    padding: 20px 0;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav ul li {
+    width: 100%;
+}
+
+nav ul li a {
+    color: #ecf0f1;
+    padding: 15px 20px;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+nav ul li a:hover {
+    background-color: #34495e;
+}
+
+.container {
+    margin-left: 270px;
+    padding: 40px;
+    flex: 1;
+    overflow-y: auto;
+    background-color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hero {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-grow: 1
+}
+
+.hero img {
+    width: 50%;
+    height: 50%;
+    margin-bottom: 20px;
+}
+
+.about {
+    margin-bottom: 40px;
+}
+
+.featured-products {
+    margin-bottom: 40px;
+}
+
+.featured-products .products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.featured-products .product {
+    background-color: #f4f4f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.featured-products .product img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.featured-products .product h3 {
+    margin: 10px 0;
+    font-size: 1.2em;
+}
+
+
+.product-form, .user-form {
+    margin-bottom: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    overflow: hidden;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card h3 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #2c3e50;
+}
+
+.card p {
+    margin: 10px 0;
+    color: #7f8c8d;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0 5px;
+}
+
+.button:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+}
+
+.edit-button {
+    background-color: #f39c12;
+    color: #2c3e50;
+}
+
+.edit-button:hover {
+    background-color: #e67e22;
+}
+
+.no-underline {
+    text-decoration: none;
+    color: white;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+
+.addbasket-button {
+    background-color: #2ecc71;
+    color: white;
+}
+
+.addbasket-button:hover {
+    background-color: #27ae60;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

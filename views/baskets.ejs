@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Basket</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/baskets">Baskets</a></li>
+            <li><a href="/favorites">Favorites</a></li>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Basket</h1>
+        <div class="product-list">
+            <% products.forEach(product => { %>
+                <div class="card">
+                    <h3><%= product.name %></h3>
+                    <p>Description: <%= product.description %></p>
+                    <p>Stock: <%= product.stock %></p>
+                    <p>Category: <%= product.category %></p>
+                    <p>Price: <%= product.price %></p>
+                    <img src="<%= product.image_url %>" alt="<%= product.name %> Image">
+                    <button class="edit-button" onclick="openEditModal('<%= product.id %>', '<%= product.name %>', '<%= product.desc %>', '<%= product.stock %>', '<%= product.category %>', '<%= product.price %>', '<%= product.imageUrl %>')">Edit</button>
+                    <form>
+                    <button class="delete-button" onclick="deleteBasket('<%= product.id %>')">Delete</button>
+                    </form>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <input type="text" id="editName" placeholder="Product Name" required>
+                <input type="text" id="editDesc" placeholder="Description" required>
+                <input type="number" id="editStock" placeholder="Stock" required>
+                <input type="text" id="editCategory" placeholder="Category" required>
+                <input type="number" id="editPrice" placeholder="Price" required>
+                <input type="text" id="editImageUrl" placeholder="Image URL" required>
+                <button type="submit" class="add-button">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const editForm = document.getElementById('editForm');
+
+        editForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const editedProduct = {
+                id: document.getElementById('editId').value,
+                name: document.getElementById('editName').value,
+                description: document.getElementById('editDesc').value,
+                stock: document.getElementById('editStock').value,
+                category: document.getElementById('editCategory').value,
+                price: document.getElementById('editPrice').value,
+                image_url: document.getElementById('editImageUrl').value
+            };
+
+            fetch(`/baskets/${editedProduct.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(editedProduct)
+            })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result.message);
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+        });
+
+        const openEditModal = (id, name, desc, stock, category, price, imageUrl) => {
+            document.getElementById('editId').value = id;
+            document.getElementById('editName').value = name;
+            document.getElementById('editDesc').value = description;
+            document.getElementById('editStock').value = stock;
+            document.getElementById('editCategory').value = category;
+            document.getElementById('editPrice').value = price;
+            document.getElementById('editImageUrl').value = image_url;
+            document.getElementById('editModal').style.display = 'block';
+        };
+
+        const closeEditModal = () => {
+            document.getElementById('editModal').style.display = 'none';
+        };
+
+        const deleteBasket = (id) => {
+            fetch(`/baskets/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => res.json())
+            .then(result => {
+                console.log(result.message);
+                window.location.reload();
+            })
+            .catch(err => console.error(err));
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Favorites</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/baskets">Baskets</a></li>
+            <li><a href="/favorites">Favorites</a></li>
+            <li><a href="/users/login">Login</a></li>
+            <li><a href="/users/register">Register</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Favorite Products</h1>
+        <div class="product-list">
+            <% products.forEach(product => { %>
+                <div class="card" data-id="<%= product.id %>">
+                    <h3><%= product.name %></h3>
+                    <p>Description: <%= product.description %></p>
+                    <p>Stock: <%= product.stock %></p>
+                    <p>Category: <%= product.category %></p>
+                    <p>Price: <%= product.price %></p>
+                    <img src="<%= product.image_url %>" alt="<%= product.name %> Image">
+                    <button class="edit-button" onclick="editProduct('<%= product.id %>')">Edit</button>
+                    <form class="delete-favorite-form">
+                        <button class="delete-button" onclick="deleteProduct('<%= product.id %>')">Delete</button>
+                    </form>
+                    <button class="addbasket-button" onclick="addToBasket('<%= product.id %>')">Add to Basket</button>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <script>
+        const deleteProduct = (id) => {
+            fetch(`/favorites/${id}`, {
+                method: "DELETE"
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`Failed to delete product ${id}`);
+                }
+                return res.json();
+            })
+            .then(result => {
+                if (result.success) {
+                    document.querySelector(`.card[data-id="${id}"]`).remove();
+                } else {
+                    console.error('Error deleting favorite:', result.message);
+                }
+            })
+            .catch(err => console.error("Error deleting product:", err));
+        };
+
+        const addToBasket = (id) => {
+        fetch(`/baskets/${id}`, {
+            method: "POST"
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Failed to add product to basket.');
+            }
+            return res.json();
+        })
+        .then(data => {
+            alert(data.message);
+            window.location.reload();
+        })
+        .catch(err => console.error("Error adding to basket:", err));
+
+            fetch('/baskets', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product)
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Failed to add product to basket.');
+                }
+                return res.json();
+            })
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(err => console.error("Error adding to basket:", err));
+        };
+    </script>
+</body>
+</html>
