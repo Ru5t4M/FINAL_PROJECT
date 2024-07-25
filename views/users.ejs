@@ -14,9 +14,14 @@
             <li><a href="/users">Users</a></li>
             <li><a href="/baskets">Baskets</a></li>
             <li><a href="/favorites">Favorites</a></li>
-            <li><a href="/users/login">Login</a></li>
-            <li><a href="/users/register">Register</a></li>
+            
+            <% if (!token) { %>
+                <li><a href="/users/login">Login</a></li>
+                <li><a href="/users/register">Register</a></li>
+            <% } %>
+            <li class="logout"><a href="#">Log out</a></li>
         </ul>
+        
     </nav>
     <div class="container">
         <h1>Users</h1>

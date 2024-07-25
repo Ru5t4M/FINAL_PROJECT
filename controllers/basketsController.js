@@ -6,7 +6,7 @@ function handleDisconnect() {
   dbase = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'salam123',
+    password: 'sakso134$',
     database: 'app'
   });
 
@@ -46,6 +46,9 @@ const addBasket = (req, res) => {
 };
 
 const getBaskets = (req, res) => {
+  const token = req.cookies.token;
+  const hasToken = !!token;
+
   const query = `
     SELECT p.id, p.name, p.description, p.stock, p.category, p.price, p.image_url 
     FROM product p 
@@ -58,7 +61,9 @@ const getBaskets = (req, res) => {
       res.status(500).send('Error fetching basket products');
       return;
     }
-    res.status(200).render('baskets', { products: results });
+    
+    // Pass `hasToken` to the view
+    res.status(200).render('baskets', { products: results, hasToken });
   });
 };
 

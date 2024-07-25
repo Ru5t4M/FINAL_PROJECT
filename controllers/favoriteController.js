@@ -6,7 +6,7 @@ function handleDisconnect() {
   dbase = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'salam123',
+    password: 'sakso134$',
     database: 'app'
   });
 
@@ -46,6 +46,8 @@ const addFavorite = (req, res) => {
 };
 
 const getFavorites = (req, res) => {
+  const token = req.cookies.token;
+  const hasToken = !!token;
   const query = `
     SELECT p.id, p.name, p.description, p.stock, p.category, p.price, p.image_url 
     FROM product p 
@@ -58,7 +60,7 @@ const getFavorites = (req, res) => {
       res.status(500).send('Error fetching favorite products');
       return;
     }
-    res.status(200).render('favorites', { products: results });
+    res.status(200).render('favorites', { products: results, hasToken });
   });
 };
 

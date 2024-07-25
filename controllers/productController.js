@@ -1,4 +1,6 @@
 const mysql = require("mysql2");
+const jwt = require('jsonwebtoken');
+const {adminAccess} = require("../utils/verifyToken")
 
 let dbase;
 
@@ -6,7 +8,7 @@ function handleDisconnect() {
   dbase = mysql.createConnection({
     host: 'localhost',
     user: 'root', 
-    password: 'salam123', 
+    password: 'sakso134$', 
     database: 'app' 
   });
 
@@ -45,7 +47,20 @@ const createProduct = (req, res)=>{
     });
 }
 
-const getProducts = (req, res) => {
+const getProducts = async (req, res) => {
+  let isAdmin = false;
+  let hasToken = false;
+  const token = req.cookies.token;
+
+    if (token) {
+      hasToken = true;
+      try {
+        isAdmin = await adminAccess(req);
+        } catch (err) {
+          console.error('Error checking admin access:', err);
+        }
+    }
+
     const query = 'SELECT * FROM product';
 
     dbase.query(query, (err, results) => {
@@ -54,7 +69,10 @@ const getProducts = (req, res) => {
             res.status(500).send('Error fetching products');
             return;
         }
-        res.status(200).render("products", {products: results});
+        res.status(200).render("products", { products: results, isAdmin, hasToken });
+        // const result = accessAdmin(req)
+        //     const token = req.cookies.token;
+        // res.status(200).render("products", {products: results, result});
     });
 }
 

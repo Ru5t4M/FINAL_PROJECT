@@ -14,8 +14,12 @@
             <li><a href="/users">Users</a></li>
             <li><a href="/baskets">Baskets</a></li>
             <li><a href="/favorites">Favorites</a></li>
-            <li><a href="/users/login">Login</a></li>
-            <li><a href="/users/register">Register</a></li>
+            <% if (!hasToken) { %>
+                <li><a href="/users/login">Login</a></li>
+                <li><a href="/users/register">Register</a></li>
+            <% } else { %>
+                <li class="logout"><a href="#">Logout</a></li>
+            <% } %>
         </ul>
     </nav>
     <div class="container">
@@ -29,7 +33,6 @@
                     <p>Category: <%= product.category %></p>
                     <p>Price: <%= product.price %></p>
                     <img src="<%= product.image_url %>" alt="<%= product.name %> Image">
-                    <button class="edit-button" onclick="openEditModal('<%= product.id %>', '<%= product.name %>', '<%= product.desc %>', '<%= product.stock %>', '<%= product.category %>', '<%= product.price %>', '<%= product.imageUrl %>')">Edit</button>
                     <form>
                     <button class="delete-button" onclick="deleteBasket('<%= product.id %>')">Delete</button>
                     </form>

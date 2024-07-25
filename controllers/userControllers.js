@@ -1,4 +1,5 @@
 const User = require('../model/User')
+const jwt = require("jsonwebtoken")
 
 
 const register = async (req, res) => {
@@ -18,8 +19,17 @@ const login  = async (req, res) => {
     if (!user) return res.status(401).json({ message: 'Invalid credentials' })
         
     if (user.password!== userData.password) return res.status(401).json({ message: 'Invalid credentials' })
-        
-    res.redirect('/products')
+    const data = {
+        username: user.username,
+        isAdmin: user.isAdmin
+    }
+    const options = {
+        expiresIn: '1h' // Token expires in 1 hour
+    };
+    const token = jwt.sign(data, "salam123", options);
+    res.cookie('token', token, { httpOnly: true });
+
+    res.redirect('/')
 }
 
 const registerEjs = (req, res) => {
@@ -30,13 +40,17 @@ const loginEjs = (req, res) => {
     res.render('login');
 }
 
-const logout = (req, res) =>{
+const logoutUser = (req, res) => {
+    res.clearCookie('token'); // Clear the authentication token from cookies
+    res.redirect('/'); // Redirect to the homepage or any other page
+};
 
-}
 
 const getUsers = async (req, res) => {
     const users = await User.find({});
-    res.render('users', { users });
+    const token = req.cookies.token;
+    console.log(token);
+    res.render('users', { users, token });
 };
 
 const addUser = async (req, res) => {
@@ -50,7 +64,9 @@ const getEditUser = async (req, res) => {
     const userId = req.params.id;
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.render('editUser', { user });
+    const token = req.cookies.token;
+    const hasToken = !!token;
+    res.render('editUser', { user, hasToken });
 };
 
 const updateUser = async (req, res) => {
@@ -68,4 +84,4 @@ const deleteUser = async (req, res) => {
     res.status(200).json({ message: 'User deleted' });
 };
 
-module.exports = { register, login,logout, registerEjs, loginEjs, getUsers, addUser, getEditUser, updateUser, deleteUser};
+module.exports = { register, login, logoutUser, registerEjs, loginEjs, getUsers, addUser, getEditUser, updateUser, deleteUser};
