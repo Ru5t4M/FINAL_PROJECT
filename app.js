@@ -30,7 +30,7 @@ const basketsRoute = require('./routes/basketsRoutes');
 
 app.get('/', (req, res)=>{
   const token = req.cookies.token;
-  const hasToken = !!token; // Check if token exists
+  const hasToken = !!token; 
   res.render('home', { hasToken });
 })
 

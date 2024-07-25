@@ -10,7 +10,6 @@ const verifyAdmin = async (req, res, next) =>{
             return res.status(401).json({ message: 'Token verification failed' });
         }
 
-        // Check if isAdmin is true in the request body
         if (decoded.isAdmin === true) {
             req.user = decoded;
             next()
@@ -32,7 +31,6 @@ const adminAccess = async (req) =>{
             return resolve(false)
         }
 
-        // Check if isAdmin is true in the request body
         if (decoded.isAdmin) {
             resolve(true)
         }

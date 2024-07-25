@@ -24,7 +24,7 @@ const login  = async (req, res) => {
         isAdmin: user.isAdmin
     }
     const options = {
-        expiresIn: '1h' // Token expires in 1 hour
+        expiresIn: '1h' 
     };
     const token = jwt.sign(data, "salam123", options);
     res.cookie('token', token, { httpOnly: true });
@@ -41,8 +41,8 @@ const loginEjs = (req, res) => {
 }
 
 const logoutUser = (req, res) => {
-    res.clearCookie('token'); // Clear the authentication token from cookies
-    res.redirect('/'); // Redirect to the homepage or any other page
+    res.clearCookie('token'); 
+    res.redirect('/'); 
 };
 
 

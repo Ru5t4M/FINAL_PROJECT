@@ -79,14 +79,12 @@
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                    // You can add more headers if needed
                 }
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    // Handle the response as needed
                     console.log('Logout successful');
                 })
                 .catch(error => {

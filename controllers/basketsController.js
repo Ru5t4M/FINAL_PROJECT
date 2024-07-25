@@ -62,7 +62,6 @@ const getBaskets = (req, res) => {
       return;
     }
     
-    // Pass `hasToken` to the view
     res.status(200).render('baskets', { products: results, hasToken });
   });
 };

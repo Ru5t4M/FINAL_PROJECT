@@ -1,4 +1,3 @@
-// middleware/auth.js
 function ensureAuthenticated(req, res, next) {
     if (req.cookies.token) {
       return next();

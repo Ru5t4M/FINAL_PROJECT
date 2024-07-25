@@ -70,9 +70,6 @@ const getProducts = async (req, res) => {
             return;
         }
         res.status(200).render("products", { products: results, isAdmin, hasToken });
-        // const result = accessAdmin(req)
-        //     const token = req.cookies.token;
-        // res.status(200).render("products", {products: results, result});
     });
 }
 
