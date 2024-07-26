@@ -6,7 +6,7 @@ function handleDisconnect() {
   dbase = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'sakso134$',
+    password: 'salam123',
     database: 'app'
   });
 
